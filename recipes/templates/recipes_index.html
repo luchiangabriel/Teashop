@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <a href="{% url 'recipes:adauga' %}">Add new recipe</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Name</th>
+                <th>Ingredients</th>
+                <th>Image</th>
+                <th>Ingredient quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in recipe_list %}
+            <tr>
+                <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.ingredients }}</td>
+                <td><img src="{{ item.image.url }}" alt="Recipe Image"></td>
+                <td>{{ item.quantity.quantity }}</td>
+                <td><a class="btn btn-info" href="{% url 'recipes:modifica' item.id %}">Update Recipe</a>
+                    <a class="btn btn-success" href="{% url 'recipes:preparare' item.id %}">Prepare Recipe</a>
+                    <a class="btn btn-danger" href="{% url 'recipes:dezactiveaza' item.id %}">Delete Recipe</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li><a class="btn" href="?page={{page_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class="disabled btn"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="active btn btn-info"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a class="btn" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li><a class="btn" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled btn"><span>&raquo;</span></li>
+            {% endif %}
+            <p class="allign-right">Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }}</p>
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

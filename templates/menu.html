@@ -1,0 +1,194 @@
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href='https://fonts.googleapis.com/css?family=Cinzel Decorative' rel='stylesheet'>
+<style>
+
+body {
+    font-family: 'Cinzel Decorative';font-size: 22px;
+}
+
+/* ------------------------------ */
+/*             Menu               */
+/* ------------------------------ */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+
+
+#main {
+  transition: margin-left .5s;
+  padding: 20px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+/* ------------------- */
+/*         Teas        */
+/* ------------------- */
+
+tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
+.tabcontent {
+  color: white;
+  display: none;
+  padding: 50px;
+  text-align: center;
+}
+
+#Stressed {background-color:red;}
+#Tired {background-color:green;}
+#Cooled {background-color:blue;}
+#Sleepiness {background-color:orange;}
+
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #04AA6D;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+</style>
+</head>
+<body>
+
+
+<div align="center">
+<span onclick='openNav()'> <button type="button" class="block">Menu</button></span>
+</div>
+ <div id="Stressed" class="tabcontent">
+  <h1>Mint Tea</h1>
+  <p>To combat the stress, we recomend a mint tea.</p>
+</div>
+
+<div id="Tired" class="tabcontent">
+  <h1>Orange Tea</h1>
+  <p>To combat the tiredness, we recomend an orange tea.</p>
+</div>
+
+<div id="Cooled" class="tabcontent">
+  <h1>Ginger Tea</h1>
+  <p>To combat the cold, we recomend a ginger tea.</p>
+</div>
+
+<div id="Sleepiness" class="tabcontent">
+  <h1>Green tea</h1>
+  <p>To combat the sleepiness, we recomend a green tea.</p>
+</div>
+
+<button class="tablink" onclick="openTea('Stressed', this, 'red')" id="defaultOpen">Stressed</button>
+<button class="tablink" onclick="openTea('Tired', this, 'green')">Tired</button>
+<button class="tablink" onclick="openTea('Cooled', this, 'blue')">Cooled</button>
+<button class="tablink" onclick="openTea('Sleepiness', this, 'orange')">Sleepiness</button>
+
+<script>
+
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+    document.body.style.backgroundColor = "white";
+}
+function openTea(teaName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(teaName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+
+}
+document.getElementById("defaultOpen").click();
+
+</script>
+
+<div id="mySidenav" class="sidenav">
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    {% if request.user.is_authenticated %}
+        <div>
+        {% elif request.user.is_authenticated and request.user.is_superuser %}
+            <div>
+            {% endif %}
+                <a class="active" href="/">Homepage</a>
+                <a class="active" href="/polls">Curiosity</a>
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_authenticated and request.user.is_superuser %}
+                        <a class="active" href="/admin">Admin</a>
+                    {% endif %}
+                    <a class="active" href="{% url 'distributors:lista_distribuitori' %}">Distributors</a>
+                    <a class="active" href="{% url 'ingredients:lista_ingrediente' %}">Ingredients</a>
+                    <a class="active" href="{% url 'recipes:lista_retete' %}">Recipes</a>
+                    <a class="active" href="{% url 'users:profile' %}">Profile of {{ request.user.first_name }} {{ request.user.last_name }}</a>
+                    <a class="active" href="{% url 'users:logout' %}">Logout</a>
+                {% else %}
+                    <a class="active" href="{% url 'users:login' %}">Login</a>
+                    <a class="active" href="{% url 'users:register' %}">Register</a>
+                {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
