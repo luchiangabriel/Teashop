@@ -65,6 +65,6 @@ It is connected to a *database* (**MySQL**) so you are everytime updated with al
   4. `DELETE RECIPE` Delete the recipe from page
 <br><br>
 - `Profile of (first name) (last name)` This page will display informations about your created profile, such as `first name`, `last name`, `email`, `username` -> which is not enabled by default, you can enable it from `users/models.py`
-<br>
-  You can choose your profile image by pressing `CHOOSE FILE` , browse your image, then press `UPLOAD` <br><br>
+<br><br>
+You can choose your profile image by pressing `CHOOSE FILE` , browse your image, then press `UPLOAD` <br><br>
 - `Logout` This option will sign you out from the page
