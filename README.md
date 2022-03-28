@@ -1,2 +1,2 @@
 # Teashop
-Django Project named Teashop
+Django Project
